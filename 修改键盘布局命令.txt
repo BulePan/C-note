@@ -1,0 +1,12 @@
+在Linux系统中有时需要切换某两个按键,提高效率.
+Ubuntu 中可使用setxkbmap命令,
+例如，执行setxkbmap -option ctrl:swapcaps 就可以将Ctrl_L与Caps_Lock进行切换。
+      执行setxkbmap -pirnt 可以显示当前键盘的布局以及选项设置
+      执行setxkbmap -opoption 可以恢复到默认选项
+
+通过查看manpage知，XKB的所有组件的源文件都在/usr/lib/X11/xkb目录下。
+不同的机器所在的位置可能不同。
+本机找到的位置是/usr/share/X11/xkb目录下方法
+通过grep -R swapcaps *找到目录下所有包含swapcaps字样的文件，由此可知，swapcaps是在symbos/ctrl文件里定义的。打开文件可以见到swapcaps的定义
+通过切换ctrl:后的命令切换对setxkbmap的使用模式
+
