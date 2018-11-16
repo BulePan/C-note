@@ -163,3 +163,29 @@ decltype(*p) c; //错误：c是int&，必须初始化
 ```
 因为r是一个引用，因此decltype(r)的结果是引用类型，如果想让结果类型是r所指的类型，可以把r作为表达式的一部分，表达式的结果将是一个具体的值而非引用。如果表达式的内容是解引用操作，则decltype将得到引用类型。
 ==decltype((variable)) (双括号)的结果永远是引用，而decltype(variable)的结果只有当variable本身就是引用时才是引用。==
+
+## 强制类型转换
++ **static_cast** 
+任何具有明确定义的类型转换，只要不包含底层const，都可以使用static_cast。常用的有：第一种将较大算数类型转换成较小数据类型，此时编译器不会提示丢失精度的警告；第二种将存放在void*中的指针转换回原来的类型；也可用于将晓得数据类型转换为大的数据类型如int转double。
++ **cosnt_cast**
+它只能改变运算对象的底层const，对于将常量对象转换成非常量的行为一般称为**去掉const性质**，一旦去掉对象的const性质，程序中可以对该对象进行写操作，如果对象本身不是常量，写操作合法，但如果对象本身是常量，执行写操作将是未定义行为。const_cast 常用于有函数重载的上下文中。
+```
+const char* pc;
+char *p = const_cast<char *>(pc);//正确：但是通过p写值是未定义行为
+
+const char *cp;
+char *q = static_cast<char*<(cp); //错误：static_cast不能去掉const性质
+static_cast<string>(cp); //正确：支付穿字面值转换成string类型
+const_cast<string>(cp); //错误：const_cast只能改变常量属性
+```
++ **reinterpret_cast**
+通常为运算对象的位模式提供较低层次上的重新解释。如：
+```
+int *p;
+char *pc = reinterpret_cast<char *>(ip);
+```
+但必须记住pc所指的真实对象是int而非字符，如果把pc当做普通的字符指针使用就可能在运行时发生错误。reinterpret_cast的本质依赖机器。
+
++ **dynamic_cast**
+支持运行时类型识别。
+
